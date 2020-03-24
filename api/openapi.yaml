@@ -1,0 +1,33 @@
+openapi: 3.0.0 # define openapi version
+
+info: # define API related info
+  title: Awesome API
+  description: API That created to implementing API-First development using OAS3.0
+  version: 1.0.0
+
+servers: # define servers that used for this API
+  - url: http://localhost
+    description: local server for awesome api
+
+paths: # define available endpoint path.
+  /items: # define path
+    get: #define method
+      description: showing all stored items
+      responses:
+        '200':
+          $ref: './components/item.yaml#/components/responses/index' # will refer to index responses on components/item.yaml
+    post:
+      description: store an item
+      requestBody:
+        $ref: './components/item.yaml#/components/requestBodies/store' # will refer to store request body on components/item.yaml
+      responses:
+        '201':
+          $ref: './components/item.yaml#/components/responses/store'
+  /items/{id}:
+    get:
+      description: show item by id
+      parameters:
+        - $ref: './components/item.yaml#/components/parameters/show'
+      responses:
+        '200':
+          $ref: './components/item.yaml#/components/responses/show'

@@ -1,0 +1,60 @@
+openapi: 3.0.0 # define openapi version
+
+components: # define reusable components
+  schemas: # define reusable schemas
+    Item: # schema name
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: integer
+      required:
+        - name
+        - price
+    ItemList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Item' # reference will refer to Item schema inside this file
+      minItems: 3
+  parameters: # define reusable parameter
+    show: # parameter name
+      description: the `id` of the item.
+      in: path # define the parameter location (path, query, cookies, etc)
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBodies: # define reusable request body
+    store: # request body name
+      description:  A Json object conttaining item information
+      required: true
+      content:
+        application/json: # define content-type
+          schema:
+            $ref: '#/components/schemas/Item'
+  responses: # define reusable response
+    index: # response name
+      description: the response for showing all items
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ItemList'
+    show:
+      description: the response for showing item by id
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Item'
+    store:
+      description: the response after storing an item object.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: id of the stored object
